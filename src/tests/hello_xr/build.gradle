@@ -29,13 +29,15 @@ android {
         versionCode = project.versionOpenXR.getVersionCode()
 
         externalNativeBuild {
+            ndk {
+                abiFilters 'arm64-v8a'
+            }
             cmake {
-                arguments '-DBUILD_API_LAYERS=OFF',
-                        '-DBUILD_TESTS=ON',
-                        '-DBUILD_LOADER=ON',
-                        '-DBUILD_CONFORMANCE_TESTS=OFF',
-                        '-DBUILD_ALL_EXTENSIONS=ON'
-                targets "openxr_loader", "hello_xr"
+                arguments '-DBUILD_CONFORMANCE_TESTS=OFF',
+                        '-DBUILD_LOADER=OFF',
+                        '-DQUEST_BUILD=ON',
+                        '-DOCULUS_OPENXR_MOBILE_SDK=' + getOculusOpenXRMobileSDKPath()
+                cppFlags ''
             }
         }
     }
@@ -105,3 +107,18 @@ if (keystorePropertiesFilename) {
     }
 }
 
+def getOculusOpenXRMobileSDKPath() {
+    // oculus.openxr.mobile.sdk.path property must be set to the path of the
+    // Oculus OpenXR Mobile SDK in the local.properties file before building.
+
+    Properties properties = new Properties()
+    def localPropertiesFile = project.rootProject.file('local.properties')
+    assert localPropertiesFile.exists()
+    properties.load(localPropertiesFile.newDataInputStream())
+
+    String sdkPathPropertyName = "oculus.openxr.mobile.sdk.path"
+    def sdkPath = properties.getProperty(sdkPathPropertyName)
+    project.logger.debug("Oculus OpenXR Mobile SDK Path: " + sdkPath)
+    assert file(sdkPath).exists()
+    return sdkPath
+}

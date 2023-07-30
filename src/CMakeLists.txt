@@ -111,6 +111,20 @@ find_package(JsonCpp)
 
 ### All options defined here
 option(BUILD_LOADER "Build loader" ON)
+option(QUEST_BUILD "Build for Quest" OFF)
+
+if(QUEST_BUILD AND NOT BUILD_LOADER)
+    add_library(OpenXR::openxr_loader SHARED IMPORTED)
+    message("OCULUS_OPENXR_MOBILE_SDK=${OCULUS_OPENXR_MOBILE_SDK}")
+    set_property(
+        TARGET
+            OpenXR::openxr_loader
+        PROPERTY
+            IMPORTED_LOCATION
+            ${OCULUS_OPENXR_MOBILE_SDK}/OpenXR/Libs/Android/${ANDROID_ABI}/${CMAKE_BUILD_TYPE}/libopenxr_loader.so
+    )
+endif()
+
 option(BUILD_ALL_EXTENSIONS "Build loader and layers with all extensions" OFF)
 option(
     BUILD_LOADER_WITH_EXCEPTION_HANDLING
