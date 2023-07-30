@@ -84,7 +84,7 @@ add_library(XrApiLayer_api_dump SHARED
 )
 set_target_properties(XrApiLayer_api_dump PROPERTIES FOLDER ${API_LAYERS_FOLDER})
 
-target_link_libraries(XrApiLayer_api_dump PRIVATE Threads::Threads OpenXR::headers)
+target_link_libraries(XrApiLayer_api_dump PRIVATE Threads::Threads)
 target_compile_definitions(XrApiLayer_api_dump PRIVATE ${OPENXR_ALL_SUPPORTED_DEFINES})
 add_dependencies(XrApiLayer_api_dump
     generate_openxr_header
@@ -95,6 +95,10 @@ target_include_directories(XrApiLayer_api_dump
     PRIVATE
     ${PROJECT_SOURCE_DIR}/src/common
     ${CMAKE_CURRENT_SOURCE_DIR}
+
+    # for OpenXR headers
+    ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
 
     # for generated dispatch table
     ${CMAKE_CURRENT_SOURCE_DIR}/..
@@ -151,7 +155,7 @@ add_library(XrApiLayer_core_validation SHARED
 )
 set_target_properties(XrApiLayer_core_validation PROPERTIES FOLDER ${API_LAYERS_FOLDER})
 
-target_link_libraries(XrApiLayer_core_validation PRIVATE Threads::Threads OpenXR::headers)
+target_link_libraries(XrApiLayer_core_validation PRIVATE Threads::Threads)
 target_compile_definitions(XrApiLayer_core_validation PRIVATE ${OPENXR_ALL_SUPPORTED_DEFINES})
 add_dependencies(XrApiLayer_core_validation
     generate_openxr_header
@@ -160,6 +164,10 @@ add_dependencies(XrApiLayer_core_validation
 target_include_directories(XrApiLayer_core_validation
     PRIVATE
     ${PROJECT_SOURCE_DIR}/src/common
+
+    # for OpenXR headers
+    ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
 
     # for generated dispatch table
     ${CMAKE_CURRENT_SOURCE_DIR}/..

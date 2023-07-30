@@ -42,6 +42,10 @@ target_include_directories(openxr_runtime_list_json
     PRIVATE
     ${PROJECT_SOURCE_DIR}/src
     ${PROJECT_SOURCE_DIR}/src/common
+
+    # for OpenXR headers
+    ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
 )
 
 if(Vulkan_FOUND)
@@ -51,7 +55,7 @@ if(Vulkan_FOUND)
     )
 endif()
 
-target_link_libraries(openxr_runtime_list_json OpenXR::openxr_loader)
+target_link_libraries(openxr_runtime_list_json openxr_loader)
 if(WIN32)
     if(MSVC)
         target_compile_definitions(openxr_runtime_list_json PRIVATE _CRT_SECURE_NO_WARNINGS)

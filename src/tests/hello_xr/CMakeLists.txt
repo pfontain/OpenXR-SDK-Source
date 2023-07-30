@@ -52,6 +52,10 @@ target_include_directories(hello_xr
     ${PROJECT_SOURCE_DIR}/src
     ${PROJECT_SOURCE_DIR}/src/common
 
+    # for OpenXR headers
+    ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
+
     # for helper headers
     ${PROJECT_SOURCE_DIR}/external/include
 )
@@ -67,7 +71,7 @@ if(Vulkan_FOUND)
     )
 endif()
 
-target_link_libraries(hello_xr OpenXR::openxr_loader)
+target_link_libraries(hello_xr openxr_loader)
 if(TARGET openxr-gfxwrapper)
     target_link_libraries(hello_xr openxr-gfxwrapper)
 endif()
