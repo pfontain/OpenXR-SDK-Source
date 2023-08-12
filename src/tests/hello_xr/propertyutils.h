@@ -1,0 +1,8 @@
+// Copyright (c) 2023, Paulo Gomes
+
+#pragma once
+
+// Get system property converted to type. Only fully supported for floats and ints.
+// If not found, return default value.
+template <typename T>
+T getProperty(const char *name, T default_value);
