@@ -18,6 +18,7 @@
 set(LOCAL_HEADERS
     check.h
     common.h
+    content.h
     d3d_common.h
     geometry.h
     graphicsapi.h
@@ -25,11 +26,14 @@ set(LOCAL_HEADERS
     logger.h
     openxr_program.h
     options.h
+    math.h
     pch.h
     platformdata.h
     platformplugin.h
+    propertyutils.h
 )
 set(LOCAL_SOURCE
+    content.cpp
     d3d_common.cpp
     graphicsplugin_d3d11.cpp
     graphicsplugin_d3d12.cpp
@@ -45,6 +49,7 @@ set(LOCAL_SOURCE
     platformplugin_factory.cpp
     platformplugin_posix.cpp
     platformplugin_win32.cpp
+    propertyutils.cpp
 )
 set(VULKAN_SHADERS vulkan_shaders/frag.glsl vulkan_shaders/vert.glsl)
 
