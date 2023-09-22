@@ -39,4 +39,4 @@ specification/checkMarkup           eol=lf
 specification/checkSpecLinks        eol=lf
 
 # Ignore external files for language detection purposes
-external/* linguist-vendored
+external/** linguist-vendored
