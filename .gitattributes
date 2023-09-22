@@ -37,3 +37,6 @@ specification/makeReleaseArtifacts  eol=lf
 specification/makeSpec              eol=lf
 specification/checkMarkup           eol=lf
 specification/checkSpecLinks        eol=lf
+
+# Ignore external files for language detection purposes
+external/* linguist-vendored
