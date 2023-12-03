@@ -4,45 +4,61 @@
 #include "pch.h"
 
 template <typename T>
-T getProperty(const char *name, T default_value) {
+T getProperty(const char *name, T defaultValue) {
     (void)name;
-    return default_value;
+    return defaultValue;
 }
 
 template <>
-float getProperty(const char *name, float default_value) {
-    auto property_value = default_value;
+float getProperty(const char *name, float defaultValue) {
+    auto propertyValue = defaultValue;
 
 #ifdef XR_USE_PLATFORM_ANDROID
     // TODO: Use __system_property_read_callback instead
     char value[PROP_VALUE_MAX] = {};
     if (__system_property_get(name, value) != 0) {
         char *end{};
-        float value_converted = strtof(value, &end);
+        float valueConverted = strtof(value, &end);
         if (value != end) {
-            property_value = value_converted;
+            propertyValue = valueConverted;
         }
     }
 #endif
 
-    return property_value;
+    return propertyValue;
 }
 
 template <>
-int getProperty(const char *name, int default_value) {
-    auto property_value = default_value;
+int getProperty(const char *name, int defaultValue) {
+    auto propertyValue = defaultValue;
 
 #ifdef XR_USE_PLATFORM_ANDROID
     // TODO: Use __system_property_read_callback instead
     char value[PROP_VALUE_MAX] = {};
     if (__system_property_get(name, value) != 0) {
         char *end;
-        auto value_converted = static_cast<int>(std::strtol(value, &end, 10));
+        auto valueConverted = static_cast<int>(std::strtol(value, &end, 10));
         if (value != end) {
-            property_value = value_converted;
+            propertyValue = valueConverted;
         }
     }
 #endif
 
-    return property_value;
+    return propertyValue;
+}
+
+// TODO: Refactor duplicate code with functions above
+template <>
+std::string getProperty(const char *name, std::string defaultValue) {
+    auto propertyValue = defaultValue;
+
+#ifdef XR_USE_PLATFORM_ANDROID
+    // TODO: Use __system_property_read_callback instead
+    char value[PROP_VALUE_MAX] = {};
+    if (__system_property_get(name, value) != 0) {
+        propertyValue = value;
+    }
+#endif
+
+    return propertyValue;
 }

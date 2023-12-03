@@ -7,7 +7,7 @@
 #include "geometry.h"
 #include "graphicsplugin.h"
 #include "options.h"
-#include "unordered_map"
+#include "content.h"
 
 #ifdef XR_USE_GRAPHICS_API_OPENGL_ES
 
@@ -141,19 +141,21 @@ struct OpenGLESGraphicsPlugin : public IGraphicsPlugin {
     void InitializeResources() {
         glGenFramebuffers(1, &m_swapchainFramebuffer);
 
+        const char* vertexShaderSource = GetShaderSource(
+                VertexShaderGlsl,
+                m_options->ShaderSources,
+                "debug.xr.vertex.glsl.filename",
+                "vert.glsl");
         GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-        const char* vertexShaderSource = VertexShaderGlsl;
-        if (m_options->ShaderSources.count("vert.glsl") != 0) {
-            vertexShaderSource = m_options->ShaderSources["vert.glsl"].c_str();
-        }
         glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
         glCompileShader(vertexShader);
         CheckShader(vertexShader);
 
-        const char* fragmentShaderSource = VertexShaderGlsl;
-        if (m_options->ShaderSources.count("frag.glsl") != 0) {
-            fragmentShaderSource = m_options->ShaderSources["frag.glsl"].c_str();
-        }
+        const char* fragmentShaderSource = GetShaderSource(
+                FragmentShaderGlsl,
+                m_options->ShaderSources,
+                "debug.xr.fragment.glsl.filename",
+                "frag.glsl");
         GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
         glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
         glCompileShader(fragmentShader);

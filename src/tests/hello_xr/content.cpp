@@ -23,3 +23,23 @@ void AddCubeGrid(std::vector<Cube>& cubes) {
         }
     }
 }
+
+const char* GetShaderSource(
+        const char* defaultShaderSource,
+        const std::unordered_map<std::string, std::string>& shaderSources,
+        const char* shaderFilenameProperty,
+        const std::string& defaultShaderFilename) {
+
+    const char* shaderSource = defaultShaderSource;
+
+    std::string shaderFilename = getProperty(shaderFilenameProperty, defaultShaderFilename);
+    auto it = shaderSources.find(shaderFilename);
+    if (it != shaderSources.end()) {
+        shaderSource = it->second.c_str();
+    }
+    else {
+        Log::Write(Log::Level::Warning, "Did not find shader file " + shaderFilename);
+    }
+
+    return shaderSource;
+}

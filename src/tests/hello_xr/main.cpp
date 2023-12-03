@@ -21,7 +21,6 @@ __declspec(dllexport) DWORD AmdPowerXpressRequestHighPerformance = 0x00000001;
 #endif  // defined(_WIN32)
 
 #ifdef XR_USE_PLATFORM_ANDROID
-#include <android/asset_manager_jni.h>
 #include "assetmanager.h"
 #endif
 
