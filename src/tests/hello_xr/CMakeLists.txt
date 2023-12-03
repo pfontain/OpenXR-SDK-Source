@@ -16,6 +16,7 @@
 #
 
 set(LOCAL_HEADERS
+    assetmanager.h
     check.h
     common.h
     content.h
@@ -33,6 +34,7 @@ set(LOCAL_HEADERS
     propertyutils.h
 )
 set(LOCAL_SOURCE
+    assetmanager.cpp
     content.cpp
     d3d_common.cpp
     graphicsplugin_d3d11.cpp

@@ -20,6 +20,11 @@ __declspec(dllexport) DWORD AmdPowerXpressRequestHighPerformance = 0x00000001;
 }
 #endif  // defined(_WIN32)
 
+#ifdef XR_USE_PLATFORM_ANDROID
+#include <android/asset_manager_jni.h>
+#include "assetmanager.h"
+#endif
+
 namespace {
 
 #ifdef XR_USE_PLATFORM_ANDROID
@@ -238,6 +243,8 @@ void android_main(struct android_app* app) {
 
         options->SetEnvironmentBlendMode(program->GetPreferredBlendMode());
         UpdateOptionsFromSystemProperties(*options);
+        LoadShaderSourcesIntoOptions(*options, Env, app->activity->clazz);
+
         platformPlugin->UpdateOptions(options);
         graphicsPlugin->UpdateOptions(options);
 

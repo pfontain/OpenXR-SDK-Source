@@ -7,6 +7,7 @@
 #include "geometry.h"
 #include "graphicsplugin.h"
 #include "options.h"
+#include "unordered_map"
 
 #ifdef XR_USE_GRAPHICS_API_OPENGL_ES
 
@@ -44,7 +45,7 @@ static const char* FragmentShaderGlsl = R"_(#version 320 es
 
 struct OpenGLESGraphicsPlugin : public IGraphicsPlugin {
     OpenGLESGraphicsPlugin(const std::shared_ptr<Options>& options, const std::shared_ptr<IPlatformPlugin> /*unused*/&)
-        : m_clearColor(options->GetBackgroundClearColor()) {}
+        : m_clearColor(options->GetBackgroundClearColor()), m_options(options) {}
 
     OpenGLESGraphicsPlugin(const OpenGLESGraphicsPlugin&) = delete;
     OpenGLESGraphicsPlugin& operator=(const OpenGLESGraphicsPlugin&) = delete;
@@ -141,12 +142,20 @@ struct OpenGLESGraphicsPlugin : public IGraphicsPlugin {
         glGenFramebuffers(1, &m_swapchainFramebuffer);
 
         GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(vertexShader, 1, &VertexShaderGlsl, nullptr);
+        const char* vertexShaderSource = VertexShaderGlsl;
+        if (m_options->ShaderSources.count("vert.glsl") != 0) {
+            vertexShaderSource = m_options->ShaderSources["vert.glsl"].c_str();
+        }
+        glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
         glCompileShader(vertexShader);
         CheckShader(vertexShader);
 
+        const char* fragmentShaderSource = VertexShaderGlsl;
+        if (m_options->ShaderSources.count("frag.glsl") != 0) {
+            fragmentShaderSource = m_options->ShaderSources["frag.glsl"].c_str();
+        }
         GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource(fragmentShader, 1, &FragmentShaderGlsl, nullptr);
+        glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
         glCompileShader(fragmentShader);
         CheckShader(fragmentShader);
 
@@ -360,6 +369,9 @@ struct OpenGLESGraphicsPlugin : public IGraphicsPlugin {
     // Map color buffer to associated depth buffer. This map is populated on demand.
     std::map<uint32_t, uint32_t> m_colorToDepthMap;
     std::array<float, 4> m_clearColor;
+
+    // TODO: Have reference to shader sources instead
+    std::shared_ptr<Options> m_options;
 };
 }  // namespace
 

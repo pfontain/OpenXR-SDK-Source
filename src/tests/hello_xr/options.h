@@ -5,6 +5,7 @@
 #pragma once
 
 #include "pch.h"
+#include <unordered_map>
 
 inline XrFormFactor GetXrFormFactor(const std::string& formFactorStr) {
     if (EqualsIgnoreCase(formFactorStr, "Hmd")) {
@@ -62,6 +63,10 @@ struct Options {
     std::string EnvironmentBlendMode{"Opaque"};
 
     std::string AppSpace{"Local"};
+
+    // Maps shader name (filename) to shader source
+    // TODO: Make shared pointer to share with graphics plugin
+    std::unordered_map<std::string, std::string> ShaderSources;
 
     struct {
         XrFormFactor FormFactor{XR_FORM_FACTOR_HEAD_MOUNTED_DISPLAY};
