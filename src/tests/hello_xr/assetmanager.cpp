@@ -16,7 +16,7 @@ void LoadShaderSourcesIntoOptions(Options& options, JNIEnv* env, jobject activit
 
     // Assumes all files in root assets folder are shaders
     const char* filename;
-    while (filename = AAssetDir_getNextFileName(assetDir)) {
+    while ((filename = AAssetDir_getNextFileName(assetDir))) {
         std::string filenameMessage = "filename: ";
         filenameMessage += filename;
         Log::Write(Log::Level::Info, filenameMessage);

@@ -252,6 +252,7 @@ void android_main(struct android_app* app) {
         program->CreateSwapchains();
 
         while (app->destroyRequested == 0) {
+            platformPlugin->UpdateDeltaTime();
             // Read all pending events.
             for (;;) {
                 int events;

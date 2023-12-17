@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <optional>
+
 // Wraps platform-specific implementation so the main openxr program can be platform-independent.
 struct IPlatformPlugin {
     virtual ~IPlatformPlugin() = default;
@@ -16,6 +18,14 @@ struct IPlatformPlugin {
 
     // Perform required steps after updating Options
     virtual void UpdateOptions(const std::shared_ptr<struct Options>& options) = 0;
+
+    // Updates platform specific delta time. Should be called at the beginning of every frame.
+    virtual void UpdateDeltaTime() {}
+
+    // Return the elapsed time since the last frame. Returns nothing by default.
+    virtual std::optional<double> GetDeltaTime() {
+        return std::nullopt;
+    }
 };
 
 // Create a platform plugin for the platform specified at compile time.
